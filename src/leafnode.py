@@ -8,7 +8,7 @@ class LeafNode(HTMLNode):
     def to_html(self):
         match (self.tag, self.value, self.props):
             case (_, None, _):
-                raise ValueError()
+                raise ValueError("missing value")
             case (None | "", _, _):
                 return self.value
             case _:
