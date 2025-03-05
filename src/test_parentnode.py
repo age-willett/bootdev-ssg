@@ -3,6 +3,7 @@ import unittest
 from parentnode import ParentNode
 from leafnode import LeafNode
 
+
 class TestParentNode(unittest.TestCase):
     def test_to_html_with_children(self):
         child_node = LeafNode("span", "child")
@@ -21,12 +22,12 @@ class TestParentNode(unittest.TestCase):
     def test_no_tag(self):
         child_node = LeafNode("span", "child")
         parent_node = ParentNode(None, [child_node])
-        self.assertRaises(ValueError,parent_node.to_html)
+        self.assertRaises(ValueError, parent_node.to_html)
 
     def test_blank_tag(self):
         child_node = LeafNode("span", "child")
         parent_node = ParentNode("", [child_node])
-        self.assertRaises(ValueError,parent_node.to_html)
+        self.assertRaises(ValueError, parent_node.to_html)
 
     def test_no_children(self):
         parent_node = ParentNode("div", None)
@@ -35,4 +36,4 @@ class TestParentNode(unittest.TestCase):
     def test_wrong_children_type(self):
         child_node = LeafNode("span", "child")
         parent_node = ParentNode("div", child_node)
-        self.assertRaises(TypeError,parent_node.to_html)
+        self.assertRaises(TypeError, parent_node.to_html)

@@ -13,4 +13,4 @@ class LeafNode(HTMLNode):
                 return self.value
             case _:
                 propstring = self.props_to_html()
-                return f'<{self.tag}{" "+propstring if propstring else ""}>{self.value}</{self.tag}>'
+                return f"<{self.tag}{' ' + propstring if propstring else ''}>{self.value}</{self.tag}>"
