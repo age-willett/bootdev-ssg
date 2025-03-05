@@ -27,3 +27,12 @@ class TestParentNode(unittest.TestCase):
         child_node = LeafNode("span", "child")
         parent_node = ParentNode("", [child_node])
         self.assertRaises(ValueError,parent_node.to_html)
+
+    def test_no_children(self):
+        parent_node = ParentNode("div", None)
+        self.assertRaises(ValueError, parent_node.to_html)
+
+    def test_wrong_children_type(self):
+        child_node = LeafNode("span", "child")
+        parent_node = ParentNode("div", child_node)
+        self.assertRaises(TypeError,parent_node.to_html)

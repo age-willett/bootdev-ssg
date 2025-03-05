@@ -8,9 +8,11 @@ class ParentNode(HTMLNode):
     def to_html(self):
         match (self.tag, self.children, self.props):
             case (None | "", _, _):
-                raise ValueError()
+                raise ValueError("missing tag")
             case (_, None, _):
-                raise ValueError()
+                raise ValueError("missing children")
             case _:
+                if type(self.children) is not list:
+                    raise TypeError("children is not a list")
                 propstring = self.props_to_html()
                 return f"<{self.tag}{' ' + propstring if propstring else ''}>{''.join([c.to_html() for c in self.children])}</{self.tag}>"
