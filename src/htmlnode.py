@@ -3,7 +3,7 @@ class HTMLNode:
         self,
         tag: str = None,
         value: str = None,
-        children: "HTMLNode" = None,
+        children: ["HTMLNode"] = None,
         props: dict = None,
     ):
         self.tag = tag
