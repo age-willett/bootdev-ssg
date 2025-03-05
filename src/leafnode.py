@@ -6,10 +6,11 @@ class LeafNode(HTMLNode):
         super().__init__(tag=tag, value=value, props=props)
 
     def to_html(self):
-        match (self.tag, self.value):
-            case (_, None):
+        match (self.tag, self.value, self.props):
+            case (_, None, _):
                 raise ValueError()
-            case (None | "", _):
+            case (None | "", _, _):
                 return self.value
             case _:
-                return f"<{self.tag}>{self.value}</{self.tag}>"
+                propstring = self.props_to_html()
+                return f'<{self.tag}{" "+propstring if propstring else ""}>{self.value}</{self.tag}>'

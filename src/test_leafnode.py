@@ -19,3 +19,7 @@ class TestLeafNode(unittest.TestCase):
     def test_blank_tag(self):
         node = LeafNode("", "value")
         self.assertEqual(node.to_html(), "value")
+
+    def test_with_props(self):
+        node = LeafNode("a", "Hello, world!", {"href": "https://www.duckduckgo.com"})
+        self.assertEqual(node.to_html(), '<a href="https://www.duckduckgo.com">Hello, world!</a>')

@@ -5,7 +5,7 @@ from htmlnode import HTMLNode
 class TestHtmlNode(unittest.TestCase):
     def test_props_to_html(self):
         node = HTMLNode(props={"tag": "testtag", "value":"testvalue"})
-        self.assertEqual(node.props_to_html(), "tag=testtag value=testvalue")
+        self.assertEqual(node.props_to_html(), 'tag="testtag" value="testvalue"')
 
     def test_eq(self):
         node = HTMLNode("testtag", "testvalue", HTMLNode("nestedtest"), {"test": "value"})
