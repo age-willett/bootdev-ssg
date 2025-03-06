@@ -1,5 +1,6 @@
 from enum import Enum
 from leafnode import LeafNode
+from itertools import zip_longest
 
 
 class TextType(Enum):
@@ -27,7 +28,7 @@ class TextNode:
         return f"TextNode({self.text}, {self.text_type.value}, {self.url})"
 
 
-def text_node_to_html_node(text_node: "TextNode"):
+def text_node_to_html_node(text_node: TextNode):
     match text_node.text_type:
         case TextType.TEXT:
             return LeafNode(tag=None, value=text_node.text)
@@ -49,3 +50,21 @@ def text_node_to_html_node(text_node: "TextNode"):
             )
         case _:
             raise ValueError("invald text type")
+
+
+def split_nodes_delimiter(old_nodes: [TextNode], delimiter: str, text_type: TextType) -> [TextNode]:
+    def split_node(node: TextNode):
+        split_text = node.text.split(delimiter)
+        outer_text = split_text[::2]
+        inner_text = split_text[1::2]
+        if len(outer_text) == len(inner_text): #unclosed delimiter
+            outer_text.append(delimiter + inner_text[-1])
+            inner_text.pop()
+        outer_nodes = [*map(lambda s: TextNode(s, TextType.TEXT), outer_text)]
+        inner_nodes = [*map(lambda s: TextNode(s, text_type), inner_text)]
+        return [val for t in zip_longest(outer_nodes, inner_nodes) for val in t if val is not None]
+
+    new_nodes = []
+    for node in old_nodes:
+        new_nodes.extend(split_node(node))
+    return new_nodes
