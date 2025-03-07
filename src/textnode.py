@@ -52,23 +52,22 @@ def text_node_to_html_node(text_node: TextNode):
         case _:
             raise ValueError("invald text type")
 
+def _re_split_by_ends(text, start_block, end_block):
+    return re.split(re.escape(start_block) + r"(.*?)" + re.escape(end_block), text)
 
 def split_nodes_delimiter(old_nodes: [TextNode], delimiter: str, text_type: TextType) -> [TextNode]:
-    def split_node(node: TextNode):
-        split_text = node.text.split(delimiter)
-        outer_text = split_text[::2]
-        inner_text = split_text[1::2]
-        if len(outer_text) == len(inner_text): #unclosed delimiter
-            outer_text.append(delimiter + inner_text[-1])
-            inner_text.pop()
-        outer_nodes = [*map(lambda s: TextNode(s, TextType.TEXT), outer_text)]
-        inner_nodes = [*map(lambda s: TextNode(s, text_type), inner_text)]
-        return [val for t in zip_longest(outer_nodes, inner_nodes) for val in t if val is not None]
-
     new_nodes = []
     for node in old_nodes:
-        new_nodes.extend(split_node(node))
+        new_nodes.extend(split_node(node, delimiter, delimiter, text_type))
     return new_nodes
+
+def split_node(node: TextNode, start_block: str, end_block: str, text_type: TextType):
+    split_text = _re_split_by_ends(node.text, start_block, end_block)
+    for i in range(0, len(split_text), 2):
+        split_text[i] = TextNode(split_text[i], TextType.TEXT)
+    for i in range(1, len(split_text), 2):
+        split_text[i] = TextNode(split_text[i], text_type)
+    return [new_node for new_node in split_text if new_node.text != ""]
 
 def split_nodes_image(old_nodes: [TextNode]):
     def split_node(node: TextNode):
