@@ -1,7 +1,7 @@
 from enum import Enum
 from leafnode import LeafNode
 from itertools import zip_longest
-
+from markdown_helper import extract_markdown_images, extract_markdown_links
 
 class TextType(Enum):
     TEXT = "text"
@@ -68,3 +68,4 @@ def split_nodes_delimiter(old_nodes: [TextNode], delimiter: str, text_type: Text
     for node in old_nodes:
         new_nodes.extend(split_node(node))
     return new_nodes
+
