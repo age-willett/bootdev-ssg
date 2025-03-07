@@ -2,6 +2,7 @@ from enum import Enum
 from leafnode import LeafNode
 from itertools import zip_longest
 from markdown_helper import extract_markdown_images, extract_markdown_links
+import re
 
 class TextType(Enum):
     TEXT = "text"
@@ -69,3 +70,32 @@ def split_nodes_delimiter(old_nodes: [TextNode], delimiter: str, text_type: Text
         new_nodes.extend(split_node(node))
     return new_nodes
 
+def split_nodes_image(old_nodes: [TextNode]):
+    def split_node(node: TextNode):
+        node_text = node.text
+        images_in_text = extract_markdown_images(node_text)
+        image_nodes = [*map(lambda t: TextNode(t[0], TextType.IMAGE, t[1]), images_in_text)]
+        split_text = re.split(r"!\[(?:.*?)\]\((?:.*?)\)", node_text)
+        split_text = [*filter(lambda s: s != "", split_text)]
+        text_nodes = [*map(lambda s: TextNode(s, TextType.TEXT), split_text)]
+        return [val for t in zip_longest(text_nodes, image_nodes) for val in t if val is not None]
+
+    new_nodes = []
+    for node in old_nodes:
+        new_nodes.extend(split_node(node))
+    return new_nodes
+
+def split_nodes_links(old_nodes: [TextNode]):
+    def split_node(node: TextNode):
+        node_text = node.text
+        links_in_text = extract_markdown_links(node_text)
+        link_nodes = [*map(lambda t: TextNode(t[0], TextType.LINK, t[1]), links_in_text)]
+        split_text = re.split(r"(?<!!)\[(?:.*?)\]\((?:.*?)\)", node_text)
+        split_text = [*filter(lambda s: s != "", split_text)]
+        text_nodes = [*map(lambda s: TextNode(s, TextType.TEXT), split_text)]
+        return [val for t in zip_longest(text_nodes, link_nodes) for val in t if val is not None]
+
+    new_nodes = []
+    for node in old_nodes:
+        new_nodes.extend(split_node(node))
+    return new_nodes
