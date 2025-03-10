@@ -70,7 +70,7 @@ def split_node(node: TextNode, start_block: str, end_block: str, text_type: Text
     return [new_node for new_node in split_text if new_node.text != ""]
 
 def split_nodes_image(old_nodes: [TextNode]):
-    def split_node(node: TextNode):
+    def inner_split_node(node: TextNode):
         node_text = node.text
         images_in_text = extract_markdown_images(node_text)
         image_nodes = [*map(lambda t: TextNode(t[0], TextType.IMAGE, t[1]), images_in_text)]
@@ -81,11 +81,11 @@ def split_nodes_image(old_nodes: [TextNode]):
 
     new_nodes = []
     for node in old_nodes:
-        new_nodes.extend(split_node(node))
+        new_nodes.extend(inner_split_node(node))
     return new_nodes
 
 def split_nodes_links(old_nodes: [TextNode]):
-    def split_node(node: TextNode):
+    def inner_split_node(node: TextNode):
         node_text = node.text
         links_in_text = extract_markdown_links(node_text)
         link_nodes = [*map(lambda t: TextNode(t[0], TextType.LINK, t[1]), links_in_text)]
@@ -96,5 +96,5 @@ def split_nodes_links(old_nodes: [TextNode]):
 
     new_nodes = []
     for node in old_nodes:
-        new_nodes.extend(split_node(node))
+        new_nodes.extend(inner_split_node(node))
     return new_nodes
