@@ -1,8 +1,14 @@
 from textnode import TextNode, TextType
 import re
 from itertools import zip_longest
-from markdown_helper import extract_markdown_images, extract_markdown_links
 
+
+def extract_markdown_images(text: str) -> [tuple]:
+    return re.findall(r"!\[(.*?)\]\((.*?)\)", text)
+
+
+def extract_markdown_links(text: str) -> [tuple]:
+    return re.findall(r"(?<!!)\[(.*?)\]\((.*?)\)", text)
 
 
 def _re_split_by_ends(text, start_block, end_block):
