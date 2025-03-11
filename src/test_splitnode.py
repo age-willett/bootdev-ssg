@@ -1,7 +1,6 @@
 import unittest
-from textnode import (
-    TextNode,
-    TextType,
+from textnode import TextNode, TextType
+from textnode_helper import (
     split_nodes_delimiter,
     split_nodes_image,
     split_nodes_links,
