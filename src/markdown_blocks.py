@@ -2,7 +2,7 @@ from enum import Enum
 from htmlnode import HTMLNode
 from parentnode import ParentNode
 from textnode_helper import text_to_textnodes
-from textnode import TextNode, text_node_to_html_node
+from textnode import TextNode, TextType, text_node_to_html_node
 
 
 class BlockType(Enum):
@@ -37,15 +37,18 @@ def block_to_block_type(markdown_block: str):
             return BlockType.ORDEREDLIST
         case _:
             return BlockType.PARAGRAPH
-        
-def block_to_html_nodes(block:str) -> [HTMLNode]:
+
+
+def block_to_html_nodes(block: str) -> [HTMLNode]:
     text_nodes = text_to_textnodes(block)
     return [text_node_to_html_node(node) for node in text_nodes]
+
 
 def _make_header_node(block: str) -> HTMLNode:
     header_bar, header_text = block.split(" ", 1)
     hcount = header_bar.count("#")
     return HTMLNode(f"h{hcount}", None, block_to_html_nodes(header_text))
+
 
 def text_to_children(block: (str, BlockType)) -> HTMLNode:
     content, block_type = block
@@ -53,8 +56,9 @@ def text_to_children(block: (str, BlockType)) -> HTMLNode:
         case BlockType.HEADING:
             return _make_header_node(content)
         case BlockType.CODE:
-            code_content = content[3:-3]
-            return text_node_to_html_node(code_content)
+            code_text = content[4:-3]  # strip `, leading whitespace
+            code_content = TextNode(code_text, TextType.CODE)
+            return ParentNode("pre", [text_node_to_html_node(code_content)])
         case BlockType.QUOTE:
             pass
         case BlockType.UNORDEREDLIST:
@@ -62,7 +66,8 @@ def text_to_children(block: (str, BlockType)) -> HTMLNode:
         case BlockType.ORDEREDLIST:
             pass
         case BlockType.PARAGRAPH:
-            return ParentNode("p", block_to_html_nodes(content))
+            para_text = content.replace("\n", " ")
+            return ParentNode("p", block_to_html_nodes(para_text))
 
 
 def markdown_to_html_node(markdown: str) -> HTMLNode:

@@ -35,3 +35,11 @@ the **same** even with inline stuff
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
         )
 
+    def test_heading(self):
+        for i in range(1, 7):
+            md = f"""
+{"#" * (i)} Heading Level {i}
+"""
+            node = markdown_to_html_node(md)
+            html = node.to_html()
+            self.assertEqual(html, f"<div><h{i}>Heading Level {i}</h{i}></div>")
