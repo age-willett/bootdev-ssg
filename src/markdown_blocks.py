@@ -47,7 +47,7 @@ def block_to_html_nodes(block: str) -> [HTMLNode]:
 def _make_header_node(block: str) -> HTMLNode:
     header_bar, header_text = block.split(" ", 1)
     hcount = header_bar.count("#")
-    return HTMLNode(f"h{hcount}", None, block_to_html_nodes(header_text))
+    return ParentNode(f"h{hcount}", block_to_html_nodes(header_text))
 
 
 def text_to_children(block: (str, BlockType)) -> HTMLNode:
