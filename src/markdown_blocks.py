@@ -60,7 +60,18 @@ def text_to_children(block: (str, BlockType)) -> HTMLNode:
             code_content = TextNode(code_text, TextType.CODE)
             return ParentNode("pre", [text_node_to_html_node(code_content)])
         case BlockType.QUOTE:
-            pass
+            # Collapse overflowed lines into single line
+            content_by_lines = content.split("\n")
+            for i in range(len(content_by_lines)-1, 0, -1):
+                if not content_by_lines[i].startswith(">"):
+                    content_by_lines[i-1] = f"{content_by_lines[i-1]} {content_by_lines[i]}"
+                    del content_by_lines[i]
+            # Remove arrows from start of each line
+            for i in range(len(content_by_lines)):
+                content_by_lines[i] = content_by_lines[i].lstrip("> ")
+            # return the child node
+            quote_text = "\n".join(content_by_lines)
+            return ParentNode("quote", block_to_html_nodes(quote_text))
         case BlockType.UNORDEREDLIST:
             pass
         case BlockType.ORDEREDLIST:

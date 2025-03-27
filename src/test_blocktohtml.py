@@ -43,3 +43,16 @@ the **same** even with inline stuff
             node = markdown_to_html_node(md)
             html = node.to_html()
             self.assertEqual(html, f"<div><h{i}>Heading Level {i}</h{i}></div>")
+
+    def test_quote(self):
+        md = """
+>This is a quoted block
+>This is a quote that spans
+multiple lines
+"""
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><quote>This is a quoted block\nThis is a quote that spans multiple lines</quote></div>",
+        )
