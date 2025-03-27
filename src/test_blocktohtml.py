@@ -56,3 +56,16 @@ multiple lines
             html,
             "<div><quote>This is a quoted block\nThis is a quote that spans multiple lines</quote></div>",
         )
+
+    def test_quote_with_emphasis(self):
+        md = """
+>This is a **quoted** block
+>This is a _quote_ that spans
+multiple lines
+"""
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><quote>This is a <b>quoted</b> block\nThis is a <i>quote</i> that spans multiple lines</quote></div>",
+        )
