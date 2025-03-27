@@ -69,3 +69,29 @@ multiple lines
             html,
             "<div><quote>This is a <b>quoted</b> block\nThis is a <i>quote</i> that spans multiple lines</quote></div>",
         )
+
+    def test_unordered_list(self):
+        md = """
+- Eggs
+- Milk
+- Bread
+"""
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><ul><li>Eggs</li><li>Milk</li><li>Bread</li></ul></div>",
+        )
+
+    def test_ordered_list(self):
+        md = """
+1. Eggs
+2. Milk
+3. Bread
+"""
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><ol><li>Eggs</li><li>Milk</li><li>Bread</li></ol></div>",
+        )

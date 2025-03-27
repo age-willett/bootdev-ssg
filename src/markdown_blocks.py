@@ -50,6 +50,14 @@ def _make_header_node(block: str) -> HTMLNode:
     return ParentNode(f"h{hcount}", block_to_html_nodes(header_text))
 
 
+def _make_line_item_nodes(content: str) -> [HTMLNode]:
+    content_by_lines = content.splitlines()
+    filtered_content = filter(lambda s: s != "", content_by_lines)
+    line_content = [*map(lambda s: s.split(" ", 1)[1], filtered_content)]
+    line_nodes = [*map(lambda s: block_to_html_nodes(s), line_content)]
+    return [*map(lambda n: ParentNode("li", n), line_nodes)]
+
+
 def text_to_children(block: (str, BlockType)) -> HTMLNode:
     content, block_type = block
     match block_type:
@@ -62,9 +70,11 @@ def text_to_children(block: (str, BlockType)) -> HTMLNode:
         case BlockType.QUOTE:
             # Collapse overflowed lines into single line
             content_by_lines = content.split("\n")
-            for i in range(len(content_by_lines)-1, 0, -1):
+            for i in range(len(content_by_lines) - 1, 0, -1):
                 if not content_by_lines[i].startswith(">"):
-                    content_by_lines[i-1] = f"{content_by_lines[i-1]} {content_by_lines[i]}"
+                    content_by_lines[i - 1] = (
+                        f"{content_by_lines[i - 1]} {content_by_lines[i]}"
+                    )
                     del content_by_lines[i]
             # Remove arrows from start of each line
             for i in range(len(content_by_lines)):
@@ -73,8 +83,15 @@ def text_to_children(block: (str, BlockType)) -> HTMLNode:
             quote_text = "\n".join(content_by_lines)
             return ParentNode("quote", block_to_html_nodes(quote_text))
         case BlockType.UNORDEREDLIST:
-            pass
+            # Use helper function to wrap lines in li tags
+            line_nodes = _make_line_item_nodes(content)
+            # return nodes wrapped in ul tag
+            return ParentNode("ul", line_nodes)
         case BlockType.ORDEREDLIST:
+            # Use helper function to wrap lines in li tags
+            line_nodes = _make_line_item_nodes(content)
+            # return nodes wrapped in ul tag
+            return ParentNode("ol", line_nodes)
             pass
         case BlockType.PARAGRAPH:
             para_text = content.replace("\n", " ")
