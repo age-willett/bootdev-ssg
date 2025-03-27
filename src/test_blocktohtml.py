@@ -83,6 +83,19 @@ multiple lines
             "<div><ul><li>Eggs</li><li>Milk</li><li>Bread</li></ul></div>",
         )
 
+    def test_unordered_list_with_emphasis(self):
+        md = """
+- **Eggs**
+- _Milk_
+- Bread
+"""
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><ul><li><b>Eggs</b></li><li><i>Milk</i></li><li>Bread</li></ul></div>",
+        )
+
     def test_ordered_list(self):
         md = """
 1. Eggs
@@ -94,4 +107,17 @@ multiple lines
         self.assertEqual(
             html,
             "<div><ol><li>Eggs</li><li>Milk</li><li>Bread</li></ol></div>",
+        )
+
+    def test_ordered_list_with_emphasis(self):
+        md = """
+1. **Eggs**
+2. _Milk_
+3. Bread
+"""
+        node = markdown_to_html_node(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><ol><li><b>Eggs</b></li><li><i>Milk</i></li><li>Bread</li></ol></div>",
         )

@@ -83,16 +83,11 @@ def text_to_children(block: (str, BlockType)) -> HTMLNode:
             quote_text = "\n".join(content_by_lines)
             return ParentNode("quote", block_to_html_nodes(quote_text))
         case BlockType.UNORDEREDLIST:
-            # Use helper function to wrap lines in li tags
             line_nodes = _make_line_item_nodes(content)
-            # return nodes wrapped in ul tag
             return ParentNode("ul", line_nodes)
         case BlockType.ORDEREDLIST:
-            # Use helper function to wrap lines in li tags
             line_nodes = _make_line_item_nodes(content)
-            # return nodes wrapped in ul tag
             return ParentNode("ol", line_nodes)
-            pass
         case BlockType.PARAGRAPH:
             para_text = content.replace("\n", " ")
             return ParentNode("p", block_to_html_nodes(para_text))
