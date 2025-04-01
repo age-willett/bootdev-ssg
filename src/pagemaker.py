@@ -28,3 +28,6 @@ def generate_page(from_path: str, template_path: str, dest_path: str):
             os.makedirs(dir_path)
     with open(dest_path, "w") as f:
         f.write(html_page)
+
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+    pass
