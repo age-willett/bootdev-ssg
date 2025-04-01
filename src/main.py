@@ -1,9 +1,9 @@
-from textnode import TextNode, TextType
 import os, shutil
+
 
 def _copy_directory(from_directory, to_directory):
     """
-        Takes a directory 'from_directory' and copies it over 'to_directory'
+    Takes a directory 'from_directory' and copies it over 'to_directory'
     """
     dir_list = os.listdir(from_directory)
     for p in dir_list:
@@ -12,10 +12,11 @@ def _copy_directory(from_directory, to_directory):
             new_dir = f"{to_directory}/{p}"
             os.mkdir(new_dir)
             print(f"Created directory at {new_dir}")
-            _copy_directory(path_to_file,new_dir)
+            _copy_directory(path_to_file, new_dir)
         else:
             shutil.copy(path_to_file, to_directory)
             print(f"Copied file {path_to_file} to {to_directory}")
+
 
 def populate_public(static_dir="static", public_dir="public"):
     if not os.path.isdir(static_dir):
@@ -32,7 +33,6 @@ def populate_public(static_dir="static", public_dir="public"):
     os.mkdir(public_dir)
     print(f"Created directory {public_dir}")
     _copy_directory(static_dir, public_dir)
-    
 
 
 def main():
