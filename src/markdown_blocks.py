@@ -81,7 +81,7 @@ def text_to_children(block: (str, BlockType)) -> HTMLNode:
                 content_by_lines[i] = content_by_lines[i].lstrip("> ")
             # return the child node
             quote_text = "\n".join(content_by_lines)
-            return ParentNode("quote", block_to_html_nodes(quote_text))
+            return ParentNode("blockquote", block_to_html_nodes(quote_text))
         case BlockType.UNORDEREDLIST:
             line_nodes = _make_line_item_nodes(content)
             return ParentNode("ul", line_nodes)

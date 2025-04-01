@@ -1,4 +1,5 @@
 import os, shutil
+from pagemaker import generate_page
 
 
 def _copy_directory(from_directory, to_directory):
@@ -37,6 +38,7 @@ def populate_public(static_dir="static", public_dir="public"):
 
 def main():
     populate_public()
+    generate_page("content/index.md", "template.html", "public/index.html")
     # dummy = TextNode("This is some anchor text", TextType.LINK, "https://www.boot.dev")
     # print(dummy)
 

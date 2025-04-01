@@ -44,7 +44,7 @@ the **same** even with inline stuff
             html = node.to_html()
             self.assertEqual(html, f"<div><h{i}>Heading Level {i}</h{i}></div>")
 
-    def test_quote(self):
+    def test_blockquote(self):
         md = """
 >This is a quoted block
 >This is a quote that spans
@@ -54,7 +54,7 @@ multiple lines
         html = node.to_html()
         self.assertEqual(
             html,
-            "<div><quote>This is a quoted block\nThis is a quote that spans multiple lines</quote></div>",
+            "<div><blockquote>This is a quoted block\nThis is a quote that spans multiple lines</blockquote></div>",
         )
 
     def test_quote_with_emphasis(self):
@@ -67,7 +67,7 @@ multiple lines
         html = node.to_html()
         self.assertEqual(
             html,
-            "<div><quote>This is a <b>quoted</b> block\nThis is a <i>quote</i> that spans multiple lines</quote></div>",
+            "<div><blockquote>This is a <b>quoted</b> block\nThis is a <i>quote</i> that spans multiple lines</blockquote></div>",
         )
 
     def test_unordered_list(self):
