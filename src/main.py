@@ -1,4 +1,5 @@
 import os
+import sys
 import shutil
 from pagemaker import generate_pages_recursive
 
@@ -38,8 +39,12 @@ def populate_public(static_dir="static", public_dir="public"):
 
 
 def main():
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
+    else:
+        basepath = "/"
     populate_public()
-    generate_pages_recursive("content", "template.html", "public")
+    generate_pages_recursive("content", "template.html", "public", basepath)
     # dummy = TextNode("This is some anchor text", TextType.LINK, "https://www.boot.dev")
     # print(dummy)
 
