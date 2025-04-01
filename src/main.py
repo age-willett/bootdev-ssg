@@ -1,5 +1,6 @@
-import os, shutil
-from pagemaker import generate_page
+import os
+import shutil
+from pagemaker import generate_pages_recursive
 
 
 def _copy_directory(from_directory, to_directory):
@@ -38,7 +39,7 @@ def populate_public(static_dir="static", public_dir="public"):
 
 def main():
     populate_public()
-    generate_page("content/index.md", "template.html", "public/index.html")
+    generate_pages_recursive("content", "template.html", "public")
     # dummy = TextNode("This is some anchor text", TextType.LINK, "https://www.boot.dev")
     # print(dummy)
 
