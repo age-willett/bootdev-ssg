@@ -43,8 +43,8 @@ def main():
         basepath = sys.argv[1]
     else:
         basepath = "/"
-    populate_public()
-    generate_pages_recursive("content", "template.html", "public", basepath)
+    populate_public("static", "docs")
+    generate_pages_recursive("content", "template.html", "docs", basepath)
     # dummy = TextNode("This is some anchor text", TextType.LINK, "https://www.boot.dev")
     # print(dummy)
 
